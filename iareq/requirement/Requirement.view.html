@@ -1,0 +1,92 @@
+﻿<div class="col-md-12 rec-form">
+    <div id='signoff' > {{hmc.user.name}} <span id='logoff'> 
+            <a href="#/" class="btn btn-link">Home</a>
+            <a href="#/login" class="btn btn-link">Sign Out</a></span></div>
+    <h2>Add/Update Degree Requirements </h2>
+   
+    <form name="form"  role="form">
+        <div class="col-xs-12 form-group" ng-class="{ 'has-error': form.category.$dirty && form.category.$error.required }">
+            <div class='plan_filter_item'>
+                <span id="category-choice-label">Major | </span>
+                <select ng-model='hmc.info'  class='dropdown category-filter' 
+                        data-ng-options='m.name for m in hmc.major track by m.id' name='category' id='category' required
+                        ng-change='hmc.getRequirementList("major", hmc.info, $index)' > 
+                    
+                    <option value="" >-- Select category --</option>
+                </select>
+
+            </div>
+            <p><span ng-show="form.category.$dirty && form.category.$error.required" class="help-block">Category  is required</span></p>
+        </div>
+        <p><strong>Select Requirement Type: </strong><input type="radio" ng-model="hmc.category_info.type"  value="1" /> Single Eequirement
+            <input type="radio" ng-model="hmc.category_info.type" value="3" /> Group Main Requirement
+       <input type="radio" ng-model="hmc.category_info.type"  value="2" /> Group Sub Requirement
+                <input type="radio" ng-model="hmc.category_info.type" value="4" />Unique Requirement </p>
+        <div ><div class='col-xs-4'>Requirement Label</div>
+            <div><textarea ng-model='hmc.category_info.label' placeholder='Category requirement label' cols='80' name='label' id='label' required >{{hmc.category_info.label}}</textarea>
+                <span ng-show="form.label.$dirty && form.label.$error.required" class="help-block">Requirement label  is required</span>
+            </div>
+        </div>
+        <div >
+            
+            <div class='plan_filter_item' ng-show='hmc.category_info.category == 2'>
+                <span id="category-choice-label">Select Parent Requirement | </span>
+                <select ng-model='hmc.requirement_choices'  class='dropdown category-filter' 
+                        data-ng-options='m.label for m in hmc.requirement_labels track by m.req_id' name='category' id='category' required  > 
+                    
+                    <option value="" >-- Select requirement --</option>
+                </select>
+
+            </div>
+            <table class='table' >
+                <tr>
+                    <td class='col-xs-4'>Notes</td>
+                    <td><textarea ng-model='hmc.category_info.notes' placeholder='Additional information' cols='80'>{{hmc.category_info.notes}}</textarea></td>
+                </tr>
+
+                <tr>
+                    <td class='col-xs-4'>Minimum units required</td>
+                    <td><input type='text' ng-model='hmc.category_info.min_credits' placeholder='Minimum units required' value='{{hmc.category_info.min_credits}}' /></td>
+                </tr>
+                <tr>
+                    <td class='col-xs-4'>Maximum units required</td>
+                    <td><input type='text' ng-model='hmc.category_info.max_credits' placeholder='Maximum units required' value='{{hmc.category_info.max_credits}}' /></td>
+                </tr>
+                <tr>
+                    <td class='col-xs-4'>Eligible Course List</td>
+                    <td><textarea ng-model='hmc.category_info.courses' 
+                                  placeholder='Course list' cols='80' 
+                      required ng-pattern='/^((\-1[\s]*)|([\s]*[a-zA-Z]+[\s]*[\d\/]{3,8}[\s]*)|(([\s]*[a-zA-Z]+[\s]*[\d\/]{3,8}[\s]*\,)*([\s]*[a-zA-Z]+[\s][\d\/]{3,8}[\s]*)))$/'>{{hmc.category.courses}}</textarea>
+                    <p ng-show='hmc.courselist_error' class='btn btn-danger'>Invalid course list!</p>
+                    </td>
+                
+                </tr>
+                <tr>
+                    <td class='col-xs-4'>Number of courses required</td>
+                    <td><input type='text' ng-model='hmc.category_info.num_courses' placeholder='Minimum courses required' value='{{hmc.category_info.num_courses}}' /></td>
+                </tr>
+                <tr>
+                    <td class='col-xs-4'>Requirement type</td>
+                    <td>
+
+                        <select ng-model='hmc.state'   
+                                data-ng-options='m.name for m in hmc.req_types track by m.id'  required>
+                            <option value="" >--Select requirement type--</option>
+                        </select>
+                        <span ng-show="form.label.$dirty && form.label.$error.required" class="help-block">Category  is required</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="form-actions">
+            <button type="button" ng-disabled="form.$invalid || hmc.dataLoading" class="btn btn-primary" ng-click="hmc.save()" ng-show="hmc.category_requirements.length>0&&(!hmc.rec_saved)">Update Requirement</button>
+            <button type="button" ng-disabled="form.$invalid || hmc.dataLoading" class="btn btn-success" ng-click="hmc.save()" ng-show="(hmc.category_requirements.length>0)&&(hmc.rec_saved)">Requirement Saved</button>
+            <button type="button" ng-disabled="form.$invalid || hmc.dataLoading" class="btn btn-primary" ng-click="hmc.save()" ng-show="hmc.category_requirements.length===0&&(!hmc.rec_saved)">Add New Requirement</button>
+            <button type="button" ng-disabled="form.$invalid || hmc.dataLoading" class="btn btn-success" ng-click="hmc.save()" ng-show="hmc.category_requirements.length===0&&(hmc.rec_saved)">Saved New Requirement</button>
+            <button type="button" ng-disabled="form.$invalid || hmc.dataLoading||(hmc.req_index>=hmc.max_index)" class="btn btn-primary" ng-click="hmc.displayNextItem()" 
+                    ng-show="hmc.category_requirements.length>0||(hmc.category_requirements.length==0&&(hmc.rec_saved))">Next Requirement</button>
+
+
+        </div>
+    </form>
+</div>
