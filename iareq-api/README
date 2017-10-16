@@ -1,8 +1,0 @@
-
-How To Configure the API
-
-1. Modify index.php and define global constants.
-
-2. Set the base diectory in  .htaccess file 
-
-3. Run setfilepermissions.sh script to set the file permissions
